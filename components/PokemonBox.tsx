@@ -39,8 +39,6 @@ const PokemonBox = ( {pokemonID} : PokeBoxProps) : JSX.Element => {
             />
             }
             <Text style={styles.text}>{pokemonName}</Text>
-
-            {/* <BottomBar navigation={navigation} currentScreen="SwipeScreen" /> */}
         </View>
     )
 }

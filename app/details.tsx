@@ -29,14 +29,15 @@ const DetailsScreen = () : JSX.Element => {
     }
 
     type SearchParams = {pokemonID? : string}
-    const { pokemonID } = useLocalSearchParams<SearchParams>()
-    const [pokemonInfo, setPokemonInfo] = useState<PokemonInfo>({name: '', height: 0, weight: '', species: '',
-                     baseStats: {hp: 0, attack: 0, defence: 0, specialAttack: 0, specialDefense: 0, speed: 0}, sprite: '', numGames: 0})
 
     type FavoritePokemonStore = {
         addFavoritePokemon: (name: string) => void;
         favoritePokemon: string[];
     }
+
+    const { pokemonID } = useLocalSearchParams<SearchParams>()
+    const [pokemonInfo, setPokemonInfo] = useState<PokemonInfo>({name: '', height: 0, weight: '', species: '',
+                     baseStats: {hp: 0, attack: 0, defence: 0, specialAttack: 0, specialDefense: 0, speed: 0}, sprite: '', numGames: 0})
     const { addFavoritePokemon, favoritePokemon }: FavoritePokemonStore = useFavoritePokemonStore();
 
     useEffect(() : void => {
@@ -144,7 +145,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         textAlign: 'center',
         flexWrap: 'wrap',
-        // width: 100,
         borderBottomWidth: 1,
         borderColor: '#ccc'
     },
@@ -176,7 +176,6 @@ const styles = StyleSheet.create({
 
     value: {
         width: "49%"
-        // marginRight: 50
     },
 
     button: {
