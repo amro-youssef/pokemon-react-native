@@ -1,6 +1,9 @@
+import { JSX } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-const ListRow = ({title, value}: any) => {
+type ListRowProps = {title: string; value: string}
+
+const ListRow = ({title, value}: ListRowProps) : JSX.Element => {
     return (
         <View style={styles.row}>
             <Text style={styles.title}>{title}</Text>

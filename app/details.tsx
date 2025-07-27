@@ -2,70 +2,93 @@ import ListRow from "@/components/ListRow";
 import useFavoritePokemonStore from "@/store/useFavoritePokemonStore";
 import capitaliseFirstLetter from "@/utils/capitaliseFirstLetter";
 import { useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, Text, View, Image, Button } from "react-native";
 import Toast from 'react-native-toast-message'
 
 
-const DetailsScreen = ( ) => {
+const DetailsScreen = () : JSX.Element => {
 
     type PokemonInfo = {
         name: string;
         height: number;
         weight: string;
         species: string
-        baseStats: {
-            hp: number,
-            attack: number,
-            defence: number,
-            specialAttack: number,
-            specialDefense: number,
-            speed: number,
-        };
+        baseStats: BaseStats;
         sprite: string;
         numGames: number
     }
 
-    const { pokemonID } = useLocalSearchParams()
-    const [pokemonInfo, setPokemonInfo] = useState<PokemonInfo>({name: '', height: 0, weight: '', species: '', baseStats: '', sprite: '', numGames: 0})
-    const { addFavoritePokemon, favoritePokemon } = useFavoritePokemonStore();
+    type BaseStats = {
+        hp: number,
+        attack: number,
+        defence: number,
+        specialAttack: number,
+        specialDefense: number,
+        speed: number,
+    }
 
-    useEffect(() => {
+    type SearchParams = {pokemonID? : string}
+    const { pokemonID } = useLocalSearchParams<SearchParams>()
+    const [pokemonInfo, setPokemonInfo] = useState<PokemonInfo>({name: '', height: 0, weight: '', species: '',
+                     baseStats: {hp: 0, attack: 0, defence: 0, specialAttack: 0, specialDefense: 0, speed: 0}, sprite: '', numGames: 0})
+
+    type FavoritePokemonStore = {
+        addFavoritePokemon: (name: string) => void;
+        favoritePokemon: string[];
+    }
+    const { addFavoritePokemon, favoritePokemon }: FavoritePokemonStore = useFavoritePokemonStore();
+
+    useEffect(() : void => {
         console.log("use effect")
         const fetchInfo = async () => {
-            const info = await getPokemonInfo();
-            setPokemonInfo(info);
+            try {
+                const info = await getPokemonInfo();
+                setPokemonInfo(info);
+            } catch (error) {
+                console.error("Failed to get Pokemon info:", error)
+            }
         };
         fetchInfo();
     }, [])
 
     const getPokemonInfo  = async () : Promise<PokemonInfo> => {
-        const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonID}`)
-        const data = await res.json()
 
-        // add error state
+        try{
 
-        const baseStats = {
-            hp: data.stats[0].base_stat,
-            attack: data.stats[1].base_stat,
-            defence: data.stats[2].base_stat,
-            specialAttack: data.stats[3].base_stat,
-            specialDefense: data.stats[4].base_stat,
-            speed: data.stats[5].base_stat,
-        }
+            const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonID}`)
+            const data = await res.json()
+        
+            const baseStats: BaseStats = {
+                hp: data.stats[0].base_stat,
+                attack: data.stats[1].base_stat,
+                defence: data.stats[2].base_stat,
+                specialAttack: data.stats[3].base_stat,
+                specialDefense: data.stats[4].base_stat,
+                speed: data.stats[5].base_stat,
+            }
+    
+            return {
+                name: data.name,
+                height: data.height,
+                weight: data.weight,
+                species: data.species.name,
+                baseStats: baseStats,
+                sprite: data.sprites.front_default,
+                numGames: data.game_indices.length
+            }
+        } catch (error) {
+            console.error("Failed to retrieve Pokemon info", error)
+            Toast.show({
+                type: 'error',
+                text1: `Failed to retrieve Pokemon info`,
+            });
 
-        return {
-            name: data.name,
-            height: data.height,
-            weight: data.weight,
-            species: data.species.name,
-            baseStats: baseStats,
-            sprite: data.sprites.front_default,
-            numGames: data.game_indices.length
+            return pokemonInfo
         }
     }
 
-    const buttonPress = () => {
+    const buttonPress = () : void => {
         if (pokemonInfo.name !== ''){
             addFavoritePokemon(pokemonInfo.name)
             Toast.show({
@@ -109,11 +132,6 @@ const DetailsScreen = ( ) => {
             </View>
 
             <Toast position="bottom"/>
-
-
-
-
-
         </View>
     )
 }

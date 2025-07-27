@@ -1,9 +1,12 @@
 import useFavoritePokemonStore from "@/store/useFavoritePokemonStore";
 import capitaliseFirstLetter from "@/utils/capitaliseFirstLetter";
+import { JSX } from "react";
 import { Text, View, StyleSheet } from "react-native";
 
 
-const FavoritesScreen = ( {navigation} : any ) => {
+
+
+const FavoritesScreen = (): JSX.Element => {
     const { addFavoritePokemon, favoritePokemon } = useFavoritePokemonStore();
 
     return (

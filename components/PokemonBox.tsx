@@ -1,9 +1,10 @@
 import capitaliseFirstLetter from "@/utils/capitaliseFirstLetter"
-import { useEffect, useState } from "react"
-import { Image, StyleSheet, Text, View, ActivityIndicator } from "react-native"
+import { JSX, useEffect, useState } from "react"
+import { ActivityIndicator, Image, StyleSheet, Text, View } from "react-native"
 
+type PokeBoxProps = {pokemonID: number}
 
-const PokemonBox = ( {pokemonID} : any) => {
+const PokemonBox = ( {pokemonID} : PokeBoxProps) : JSX.Element => {
     const [pokemonName, setPokemonName] = useState<string>('')
     const [loading, setLoading] = useState<boolean>(false)
 
@@ -16,7 +17,7 @@ const PokemonBox = ( {pokemonID} : any) => {
             
                 setPokemonName(capitaliseFirstLetter(data.name))
             } catch (error) {
-                console.error("Failed to fetch Pokémon name:", error)
+                console.error("Failed to fetch Pokemon name:", error)
             } finally {
                 setLoading(false)
             }
@@ -25,17 +26,10 @@ const PokemonBox = ( {pokemonID} : any) => {
         getName(pokemonID)
     }, [pokemonID])
 
-    const getName = async (id: number): Promise<string> => {
-        const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
-        const data = await res.json()
-        
-        return data.name
-    }
-
     return (
         <View style={styles.box}>
             {loading ?
-                <ActivityIndicator size="large" color="#acf6fcff" />
+                <ActivityIndicator size="large" color="#acc5fcff" style={styles.img} />
             :
             <Image
                 source={{

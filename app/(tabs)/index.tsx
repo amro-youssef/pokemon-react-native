@@ -1,9 +1,9 @@
 import PokemonBox from "@/components/PokemonBox"
 import { useRouter } from "expo-router"
-import { useEffect, useState } from "react"
-import { FlatList, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native"
+import { JSX, useEffect, useState } from "react"
+import { FlatList, StyleSheet, TextInput, TouchableOpacity, View } from "react-native"
 
-const SearchScreen: React.FC = ( {navigation} : any ) => {
+const SearchScreen = () : JSX.Element  => {
     const [searchText, setSearchText] = useState<string>('')
     const [pokemonIDList, setPokemonIDList] = useState<number[]>([])
 
@@ -45,8 +45,6 @@ const SearchScreen: React.FC = ( {navigation} : any ) => {
         params: {pokemonID: ID}
       })
     }
-
-
 
     return (
         <View style={styles.container}>

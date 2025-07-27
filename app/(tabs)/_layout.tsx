@@ -1,7 +1,8 @@
 import { Tabs } from "expo-router";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { JSX } from "react";
 
-export default function TabLayout() {
+export default function TabLayout() : JSX.Element {
   return(
     <Tabs>
       <Tabs.Screen
