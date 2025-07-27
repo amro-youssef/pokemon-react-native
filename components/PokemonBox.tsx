@@ -1,3 +1,4 @@
+import capitaliseFirstLetter from "@/utils/capitaliseFirstLetter"
 import { useEffect, useState } from "react"
 import { Image, StyleSheet, Text, View, ActivityIndicator } from "react-native"
 
@@ -13,7 +14,7 @@ const PokemonBox = ( {pokemonID} : any) => {
                 const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
                 const data = await res.json()
             
-                setPokemonName(data.name.charAt(0).toUpperCase() + data.name.slice(1))
+                setPokemonName(capitaliseFirstLetter(data.name))
             } catch (error) {
                 console.error("Failed to fetch Pokémon name:", error)
             } finally {
@@ -52,27 +53,19 @@ const PokemonBox = ( {pokemonID} : any) => {
 
 const styles = StyleSheet.create({
     box: {
-        // flex: 1,
         display: 'flex',
-        // width: '100%',
         width: 102,
         height: 120,
         borderWidth: 1,
         borderRadius: 8,
         borderColor: '#ccc',
         backgroundColor: '#e6f1f5',
-        // padding: 8,
         margin: 6,
-        alignContent: 'center',
-        // justifyContent: 'center'
-        
-        // Shadow for iOS
+        alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.15,
         shadowRadius: 6,
-
-        // Shadow for Android
         elevation: 5,
     },
     img: {
@@ -80,12 +73,9 @@ const styles = StyleSheet.create({
         height: '45%',
         marginTop: 12,
         marginBottom: 15,
-        
-
     },
     text: {
         justifyContent: 'center',
-        // alignContent: 'center',
         fontFamily: 'arial',
         fontSize: 16,
         textAlign: 'center',

@@ -1,13 +1,11 @@
 import PokemonBox from "@/components/PokemonBox"
-import { useState } from "react"
+import { useRouter } from "expo-router"
+import { useEffect, useState } from "react"
 import { FlatList, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from "react-native"
 
 const SearchScreen: React.FC = ( {navigation} : any ) => {
     const [searchText, setSearchText] = useState<string>('')
     const [pokemonIDList, setPokemonIDList] = useState<number[]>([])
-
-    const data = Array.from({ length: 20 }, (_, i) => ({ id: i.toString(), title: `Item ${i + 1}` }));
-
 
     const search = async (text: string): Promise<void> => {
         setSearchText(text.toLowerCase())
@@ -34,51 +32,50 @@ const SearchScreen: React.FC = ( {navigation} : any ) => {
         setPokemonIDList(pokemonIDs)
     }
 
-    const openDetailsPage = (ID: number): void => {
+    useEffect(() => {
+      // load pokemon on first render
+      search("")
+    }, [])
 
+
+    const router = useRouter()
+    const openDetailsPage = (ID: number): void => {
+      router.push({
+        pathname: '/details',
+        params: {pokemonID: ID}
+      })
     }
 
 
 
     return (
         <View style={styles.container}>
-            {/* <Text>Search Screen</Text> */}
             <TextInput
                 placeholder="Search for Pokemon"
+                placeholderTextColor="#888"
                 value={searchText}
                 onChangeText={search}
                 style={styles.input}
+                autoCapitalize="none"
+                autoComplete="off"
+                autoCorrect={false}
 
             />
 
-            {/* <BottomBar navigation={navigation} currentScreen="SwipeScreen" /> */}
-            {/* <ScrollView style={styles.outputBox}>
-                <View style={styles.pokemonboxList}>
-                    {pokemonIDList.map((ID: number) => 
-                        <TouchableOpacity key={ID} onPress={() => {console.log(`Pressed ${ID}`)}}>
-                        <PokemonBox pokemonID={ID}/>
+            <FlatList
+                data={pokemonIDList}
+                horizontal={false}
+                style={styles.outputBox}
+                keyExtractor={item => item.toString()}
+                numColumns={3}
+                columnWrapperStyle={styles.columnWrapper}
+                contentContainerStyle={styles.flatListContent}
+                renderItem={({ item }) => (
+                    <TouchableOpacity onPress={() => openDetailsPage(item)}>
+                      <PokemonBox pokemonID={item} />
                     </TouchableOpacity>
-                    )}
-                </View>
-
-
-            </ScrollView> */}
-
-            <ScrollView style={styles.outputBox}>
-                <FlatList
-                    data={pokemonIDList}
-                    keyExtractor={item => item.toString()}
-                    numColumns={3}
-                    columnWrapperStyle={styles.columnWrapper}
-                    contentContainerStyle={styles.flatListContent}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity onPress={() => console.log(`Pressed ${item}`)}>
-                        <PokemonBox pokemonID={item} />
-                        </TouchableOpacity>
-                    )}
-                
-                />
-            </ScrollView>
+                )}
+            />
 
         </View>
     )
@@ -87,7 +84,6 @@ const SearchScreen: React.FC = ( {navigation} : any ) => {
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
-    // flex: 1,
     padding: 16,
   },
   input: {
@@ -100,41 +96,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 16,
   },
-  item: {
-    padding: 10,
-    fontSize: 16,
-  },
   outputBox: {
-
     borderWidth: 1,
     borderColor: '#ccc',
-    // width: '100%',
     height: '90%',
     flexDirection: 'row',
     flexWrap: 'wrap'
-
   },
-
   flatListContent: {
     paddingBottom: 16,
     paddingTop: 10
   },
-
   columnWrapper: {
-    justifyContent: 'space-between',
     paddingHorizontal: 8,
     marginBottom: 8,
   },
-
-//   pokemonboxList: {
-//     flexDirection: 'row',
-//     flexWrap: 'wrap',
-//     width: 120,
-//     justifyContent: 'flex-start',
-//     // flexGrow: 1
-    
-//     // paddingHorizontal: 0
-//   }
 });
 
 export default SearchScreen
