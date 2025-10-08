@@ -14,7 +14,7 @@ This is a React Native project creating using Expo, allowing you to search for y
 - **TypeScript**
 - **React Native**
 - **Zustand**
-- **Expo*
+- **Expo**
 
 ## Get started
 
