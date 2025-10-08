@@ -1,6 +1,6 @@
 # Pokemon Finder
 
-This is a React Native project creating using Expo, allowing you to search for your favorite Pokemon.
+This is a React Native project creating using Expo, allowing you to search for your favourite Pokemon.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/58143871-1d54-47c5-b51c-62509ec93bab" width="22%" />
@@ -9,7 +9,12 @@ This is a React Native project creating using Expo, allowing you to search for y
   <img src="https://github.com/user-attachments/assets/e16b9c2a-8f42-4724-9e14-ae20677a7646" width="22%" />
 </p>
 
+## Technologies Used
 
+- **TypeScript**
+- **React Native**
+- **Zustand**
+- **Expo*
 
 ## Get started
 
